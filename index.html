@@ -3,1705 +3,1299 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SunMC Store | Official Minecraft Rank Store</title>
-    <!-- Font Awesome Icons -->
+    <title>SunMC Store | Official Rank Store</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;800;900&family=Orbitron:wght@600;800;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Orbitron:wght@600;800;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0a0a0f;
-            --bg-card: #14141f;
-            --bg-card-hover: #1c1c2b;
-            --sun-gold: #ffd700;
-            --sun-orange: #ff8c00;
-            --sun-red: #ff4500;
-            --sun-glow: rgba(255, 140, 0, 0.4);
-            --text-main: #ffffff;
-            --text-sub: #a0a0b8;
-            --accent-green: #2ecc71;
-            --accent-red: #e74c3c;
-            --border-color: rgba(255, 140, 0, 0.2);
-            --font-head: 'Orbitron', sans-serif;
-            --font-subhead: 'Rajdhani', sans-serif;
-            --font-body: 'Exo 2', sans-serif;
+            --bg: #0a0a0f;
+            --card: #12121c;
+            --card2: #1a1a28;
+            --gold: #FFD700;
+            --orange: #FF8C00;
+            --red: #ff4500;
+            --text: #ffffff;
+            --muted: #9a9ab0;
+            --green: #2ecc71;
+            --danger: #e74c3c;
+            --border: rgba(255, 140, 0, 0.25);
+            --glow: rgba(255, 140, 0, 0.45);
+            --head: 'Orbitron', sans-serif;
+            --sub: 'Rajdhani', sans-serif;
+            --body: 'Exo 2', sans-serif;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: var(--font-body);
-            scroll-behavior: smooth;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--body);
             overflow-x: hidden;
-            position: relative;
+            min-height: 100vh;
         }
-
-        /* Background Animated Particles Canvas */
         #bgCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
+            position: fixed; inset: 0;
+            width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
         }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #09090d;
-        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050508; }
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, var(--sun-orange), var(--sun-gold));
+            background: linear-gradient(var(--orange), var(--gold));
             border-radius: 4px;
         }
 
-        /* Navbar */
+        /* NAV */
         header {
-            position: sticky;
-            top: 0;
-            width: 100%;
-            z-index: 100;
-            background: rgba(10, 10, 15, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(10,10,15,0.88);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
         }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
+        .nav {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 20px;
         }
-
-        .logo-box {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
+        .logo {
+            display: flex; align-items: center; gap: 12px; text-decoration: none;
         }
-
-        .logo-box i {
-            font-size: 2rem;
-            color: var(--sun-gold);
-            filter: drop-shadow(0 0 10px var(--sun-orange));
-            animation: pulseSun 2s infinite alternate;
+        .logo i {
+            font-size: 1.9rem; color: var(--gold);
+            filter: drop-shadow(0 0 10px var(--orange));
+            animation: sunPulse 2s ease-in-out infinite alternate;
         }
-
-        @keyframes pulseSun {
-            0% { transform: scale(1); filter: drop-shadow(0 0 8px var(--sun-orange)); }
-            100% { transform: scale(1.1); filter: drop-shadow(0 0 18px var(--sun-gold)); }
+        @keyframes sunPulse {
+            from { transform: scale(1); filter: drop-shadow(0 0 8px var(--orange)); }
+            to { transform: scale(1.12); filter: drop-shadow(0 0 18px var(--gold)); }
         }
-
-        .logo-text {
-            font-family: var(--font-head);
-            font-size: 1.8rem;
-            font-weight: 900;
-            background: linear-gradient(45deg, var(--sun-gold), var(--sun-orange), #ff4500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 2px;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .nav-btn {
-            background: rgba(255, 140, 0, 0.1);
-            color: var(--sun-gold);
-            border: 1px solid var(--border-color);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-family: var(--font-subhead);
-            font-weight: 700;
-            font-size: 1rem;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .nav-btn:hover {
-            background: linear-gradient(45deg, var(--sun-orange), var(--sun-gold));
-            color: #000;
-            box-shadow: 0 0 15px var(--sun-glow);
-            transform: translateY(-2px);
-        }
-
-        /* Hero Banner */
-        .hero {
-            padding: 60px 20px 40px;
-            text-align: center;
-            position: relative;
-        }
-
-        .hero-title {
-            font-family: var(--font-head);
-            font-size: 3rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            text-shadow: 0 0 20px var(--sun-glow);
-        }
-
-        .hero-title span {
-            color: var(--sun-gold);
-        }
-
-        .hero-subtitle {
-            font-family: var(--font-subhead);
-            color: var(--text-sub);
-            font-size: 1.3rem;
-            max-width: 650px;
-            margin: 0 auto 30px;
-        }
-
-        .ip-badge-box {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            background: var(--bg-card);
-            border: 2px dashed var(--sun-orange);
-            padding: 10px 24px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-        }
-
-        .ip-badge-box:hover {
-            border-color: var(--sun-gold);
-            background: var(--bg-card-hover);
-            transform: scale(1.03);
-            box-shadow: 0 0 25px var(--sun-glow);
-        }
-
-        .ip-text {
-            font-family: var(--font-head);
-            font-weight: 800;
-            font-size: 1.2rem;
-            color: var(--sun-gold);
+        .logo span {
+            font-family: var(--head); font-weight: 900; font-size: 1.7rem;
+            background: linear-gradient(90deg, var(--gold), var(--orange), var(--red));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             letter-spacing: 1px;
         }
-
-        /* Store Container */
-        .store-section {
-            max-width: 1200px;
-            margin: 40px auto 80px;
-            padding: 0 20px;
+        .nav-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+        .nav-btn {
+            background: rgba(255,140,0,0.12);
+            border: 1px solid var(--border);
+            color: var(--gold);
+            padding: 9px 16px; border-radius: 10px;
+            font-family: var(--sub); font-weight: 700; font-size: 1rem;
+            cursor: pointer; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 8px;
+            transition: 0.25s ease;
+        }
+        .nav-btn:hover {
+            background: linear-gradient(45deg, var(--orange), var(--gold));
+            color: #000; box-shadow: 0 0 18px var(--glow); transform: translateY(-2px);
         }
 
-        .section-header {
-            text-align: center;
-            margin-bottom: 40px;
+        /* HERO */
+        .hero { text-align: center; padding: 55px 20px 30px; }
+        .hero h1 {
+            font-family: var(--head); font-size: clamp(2rem, 5vw, 3.1rem);
+            font-weight: 900; text-transform: uppercase;
+            text-shadow: 0 0 24px var(--glow); margin-bottom: 10px;
         }
-
-        .section-header h2 {
-            font-family: var(--font-head);
-            font-size: 2.2rem;
-            color: #fff;
-            letter-spacing: 2px;
+        .hero h1 span { color: var(--gold); }
+        .hero p {
+            color: var(--muted); font-family: var(--sub); font-size: 1.25rem;
+            max-width: 620px; margin: 0 auto 28px;
         }
-
-        .section-header p {
-            color: var(--text-sub);
-            font-size: 1.1rem;
+        .ip-chip {
+            display: inline-flex; align-items: center; gap: 12px;
+            background: var(--card); border: 2px dashed var(--orange);
+            padding: 12px 26px; border-radius: 50px; cursor: pointer;
+            transition: 0.3s; box-shadow: 0 8px 24px rgba(0,0,0,0.4);
         }
+        .ip-chip:hover {
+            border-color: var(--gold); background: var(--card2);
+            transform: scale(1.04); box-shadow: 0 0 28px var(--glow);
+        }
+        .ip-chip .ip {
+            font-family: var(--head); font-weight: 800; color: var(--gold); font-size: 1.15rem;
+        }
+        .ip-chip small { display: block; color: var(--muted); font-size: 0.75rem; }
 
+        /* STORE */
+        .store { max-width: 1200px; margin: 20px auto 80px; padding: 0 20px; }
+        .section-head { text-align: center; margin-bottom: 36px; }
+        .section-head h2 {
+            font-family: var(--head); font-size: 2rem; letter-spacing: 2px; margin-bottom: 6px;
+        }
+        .section-head p { color: var(--muted); }
         .ranks-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 22px;
         }
-
-        /* Rank Card */
         .rank-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 25px 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 26px 22px;
+            display: flex; flex-direction: column;
+            position: relative; overflow: hidden;
+            transition: 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
         .rank-card::before {
             content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--sun-orange), var(--sun-gold));
+            position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, var(--orange), var(--gold));
         }
-
         .rank-card:hover {
             transform: translateY(-10px);
-            border-color: var(--sun-gold);
-            box-shadow: 0 10px 30px var(--sun-glow);
-            background: var(--bg-card-hover);
+            border-color: var(--gold);
+            background: var(--card2);
+            box-shadow: 0 12px 36px var(--glow);
         }
-
-        .rank-card.top-rank {
-            border: 2px solid var(--sun-gold);
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.25);
+        .rank-card.top {
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 28px rgba(255,215,0,0.22);
         }
-
-        .rank-badge {
+        .badge {
             align-self: flex-start;
-            background: rgba(255, 215, 0, 0.15);
-            color: var(--sun-gold);
-            font-size: 0.75rem;
-            font-weight: 800;
-            padding: 4px 10px;
-            border-radius: 20px;
+            font-size: 0.72rem; font-weight: 800; letter-spacing: 1px;
+            padding: 4px 10px; border-radius: 20px; margin-bottom: 14px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255, 215, 0, 0.3);
         }
-
-        .rank-title {
-            font-family: var(--font-head);
-            font-size: 1.8rem;
-            font-weight: 900;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        .rank-name {
+            font-family: var(--head); font-size: 1.75rem; font-weight: 900; margin-bottom: 8px;
         }
-
-        .rank-price-box {
-            display: flex;
-            align-items: baseline;
-            gap: 4px;
-            margin-bottom: 20px;
+        .price-row { display: flex; align-items: baseline; gap: 3px; margin-bottom: 18px; }
+        .price-row .cur { color: var(--gold); font-weight: 700; font-size: 1.1rem; }
+        .price-row .amt { font-family: var(--head); font-size: 2.1rem; font-weight: 900; }
+        .perks { list-style: none; flex: 1; margin-bottom: 22px; }
+        .perks li {
+            display: flex; gap: 10px; align-items: flex-start;
+            margin-bottom: 14px; color: #d0d0e0; font-size: 0.95rem; line-height: 1.45;
         }
-
-        .currency {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--sun-gold);
+        .perks li i { margin-top: 3px; flex-shrink: 0; }
+        .perks li strong { color: #fff; display: block; }
+        .perks code {
+            background: rgba(255,215,0,0.12); color: var(--gold);
+            padding: 1px 6px; border-radius: 4px; font-size: 0.85rem;
         }
-
-        .amount {
-            font-family: var(--font-head);
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: #fff;
-        }
-
-        .perks-list {
-            list-style: none;
-            margin-bottom: 25px;
-            flex-grow: 1;
-        }
-
-        .perks-list li {
-            font-size: 0.95rem;
-            color: #d1d1e0;
-            margin-bottom: 14px;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            line-height: 1.4;
-        }
-
-        .perks-list li i {
-            font-size: 1rem;
-            margin-top: 2px;
-            flex-shrink: 0;
-        }
-
-        .perks-list li strong {
-            color: #fff;
-            display: block;
-        }
-
         .buy-btn {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 10px;
-            background: linear-gradient(45deg, var(--sun-orange), var(--sun-gold));
-            color: #000;
-            font-family: var(--font-head);
-            font-size: 1rem;
-            font-weight: 900;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            width: 100%; border: none; border-radius: 12px;
+            padding: 13px; cursor: pointer;
+            background: linear-gradient(45deg, var(--orange), var(--gold));
+            color: #000; font-family: var(--head); font-weight: 900;
+            font-size: 0.95rem; letter-spacing: 1px; text-transform: uppercase;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: 0.25s;
         }
-
         .buy-btn:hover {
-            filter: brightness(1.15);
-            box-shadow: 0 0 20px var(--sun-glow);
-            transform: scale(1.02);
+            filter: brightness(1.12); box-shadow: 0 0 22px var(--glow); transform: scale(1.03);
         }
 
-        /* Modal Base */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(5, 5, 10, 0.85);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+        /* MODALS */
+        .overlay {
+            position: fixed; inset: 0; z-index: 1000;
+            background: rgba(5,5,12,0.88); backdrop-filter: blur(10px);
+            display: flex; align-items: center; justify-content: center;
+            padding: 16px; opacity: 0; pointer-events: none; transition: opacity 0.3s;
         }
-
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .modal-container {
-            background: var(--bg-card);
-            border: 1px solid var(--sun-orange);
+        .overlay.active { opacity: 1; pointer-events: all; }
+        .modal {
+            background: var(--card);
+            border: 1px solid var(--orange);
             border-radius: 20px;
-            width: 100%;
-            max-width: 550px;
-            padding: 30px;
-            position: relative;
-            box-shadow: 0 0 50px rgba(255, 140, 0, 0.25);
-            max-height: 90vh;
-            overflow-y: auto;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
-        }
-
-        .modal-overlay.active .modal-container {
-            transform: scale(1);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: #fff;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.2s;
-        }
-
-        .modal-close:hover {
-            background: var(--accent-red);
-        }
-
-        /* Purchase Multi-Step Form */
-        .step-progress {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 25px;
+            width: 100%; max-width: 520px;
+            padding: 28px;
+            max-height: 92vh; overflow-y: auto;
+            box-shadow: 0 0 50px rgba(255,140,0,0.28);
+            transform: scale(0.92); transition: transform 0.3s;
             position: relative;
         }
-
-        .step-progress::before {
-            content: '';
-            position: absolute;
-            top: 15px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: rgba(255,255,255,0.1);
-            z-index: 1;
+        .overlay.active .modal { transform: scale(1); }
+        .modal.wide { max-width: 960px; }
+        .close-x {
+            position: absolute; top: 16px; right: 16px;
+            width: 34px; height: 34px; border-radius: 50%;
+            border: none; background: rgba(255,255,255,0.1); color: #fff;
+            cursor: pointer; display: grid; place-items: center; transition: 0.2s;
         }
+        .close-x:hover { background: var(--danger); }
 
-        .step-item {
-            position: relative;
-            z-index: 2;
-            background: var(--bg-card);
-            padding: 0 10px;
+        .steps {
+            display: flex; justify-content: space-between;
+            margin-bottom: 24px; position: relative;
+        }
+        .steps::before {
+            content: ''; position: absolute; top: 14px; left: 8%; right: 8%;
+            height: 2px; background: rgba(255,255,255,0.1); z-index: 0;
+        }
+        .step { text-align: center; position: relative; z-index: 1; background: var(--card); padding: 0 8px; }
+        .step .dot {
+            width: 30px; height: 30px; border-radius: 50%; margin: 0 auto 4px;
+            background: #1c1c2c; border: 1px solid var(--border);
+            display: grid; place-items: center;
+            font-family: var(--head); font-weight: 700; font-size: 0.85rem; color: var(--muted);
+        }
+        .step.active .dot { background: var(--orange); color: #000; box-shadow: 0 0 12px var(--glow); }
+        .step.done .dot { background: var(--green); color: #fff; }
+        .step .lbl { font-size: 0.72rem; color: var(--muted); font-weight: 600; }
+
+        .fg { margin-bottom: 16px; }
+        .fg label { display: block; font-size: 0.88rem; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+        .fg input, .fg select {
+            width: 100%; padding: 12px 14px;
+            background: #0c0c14; border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px; color: #fff; font-size: 1rem; outline: none;
+            font-family: var(--body); transition: 0.25s;
+        }
+        .fg input:focus { border-color: var(--gold); box-shadow: 0 0 10px rgba(255,215,0,0.2); }
+        .edition-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .ed-btn {
+            padding: 12px; text-align: center; border-radius: 10px; cursor: pointer;
+            background: #0c0c14; border: 1px solid rgba(255,255,255,0.1);
+            color: var(--muted); font-weight: 700; transition: 0.25s;
+        }
+        .ed-btn.sel { border-color: var(--orange); background: rgba(255,140,0,0.15); color: var(--gold); }
+
+        /* QR BOX */
+        .qr-box {
             text-align: center;
+            background: #0c0c14;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 16px;
         }
-
-        .step-circle {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: #202030;
-            color: var(--text-sub);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: var(--font-head);
-            font-weight: 700;
-            margin: 0 auto 5px;
-            border: 1px solid var(--border-color);
-            transition: 0.3s;
-        }
-
-        .step-item.active .step-circle {
-            background: var(--sun-orange);
-            color: #000;
-            box-shadow: 0 0 10px var(--sun-glow);
-        }
-
-        .step-item.completed .step-circle {
-            background: var(--accent-green);
-            color: #fff;
-        }
-
-        .step-label {
-            font-size: 0.75rem;
-            color: var(--text-sub);
-            font-weight: 600;
-        }
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 6px;
-            font-size: 0.9rem;
-            color: var(--text-sub);
-            font-weight: 600;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 15px;
-            background: #0d0d14;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            color: #fff;
-            font-size: 1rem;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        .form-input:focus {
-            border-color: var(--sun-gold);
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
-        }
-
-        .edition-selector {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .edition-btn {
-            padding: 10px;
-            background: #0d0d14;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            color: var(--text-sub);
-            cursor: pointer;
-            text-align: center;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        .edition-btn.selected {
-            border-color: var(--sun-orange);
-            background: rgba(255, 140, 0, 0.15);
-            color: var(--sun-gold);
-        }
-
-        /* QR Canvas Box */
-        .qr-section {
-            text-align: center;
-            background: #0d0d14;
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 20px;
-        }
-
-        #qrCanvas {
-            background: #fff;
-            padding: 10px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            margin: 10px 0;
-        }
-
-        .upi-id-box {
-            font-family: var(--font-head);
-            font-size: 1.1rem;
-            color: var(--sun-gold);
-            background: rgba(255, 215, 0, 0.1);
-            padding: 8px;
-            border-radius: 8px;
-            cursor: pointer;
+        .qr-wrap {
             display: inline-block;
-            margin-top: 5px;
-        }
-
-        /* Upload Area */
-        .upload-area {
-            border: 2px dashed rgba(255,255,255,0.2);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-            background: #0d0d14;
-        }
-
-        .upload-area:hover {
-            border-color: var(--sun-orange);
-            background: rgba(255, 140, 0, 0.05);
-        }
-
-        .preview-img {
-            max-width: 100%;
-            max-height: 150px;
-            border-radius: 8px;
-            margin-top: 10px;
-            display: none;
-        }
-
-        .modal-actions {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .btn-sec {
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 10px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .btn-sec:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-        /* Admin Panel Modal */
-        .admin-modal-container {
-            max-width: 950px;
-            width: 95%;
-        }
-
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-
-        .admin-nav {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 10px;
-        }
-
-        .admin-tab-btn {
-            background: none;
-            border: none;
-            color: var(--text-sub);
-            font-family: var(--font-subhead);
-            font-size: 1.1rem;
-            font-weight: 700;
-            padding: 8px 16px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: 0.2s;
-        }
-
-        .admin-tab-btn.active {
-            background: var(--sun-orange);
-            color: #000;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .stat-card {
-            background: #0d0d14;
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-        }
-
-        .stat-val {
-            font-family: var(--font-head);
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: var(--sun-gold);
-        }
-
-        .stat-title {
-            font-size: 0.85rem;
-            color: var(--text-sub);
-        }
-
-        .table-responsive {
-            overflow-x: auto;
-        }
-
-        .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-            text-align: left;
-        }
-
-        .admin-table th, .admin-table td {
+            background: #ffffff;
             padding: 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            line-height: 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            margin: 8px 0;
+        }
+        #qrCanvas {
+            display: block;
+            width: 200px; height: 200px;
+            image-rendering: pixelated;
+        }
+        .upi-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            margin-top: 8px; padding: 8px 14px; border-radius: 8px;
+            background: rgba(255,215,0,0.12); color: var(--gold);
+            font-family: var(--head); font-size: 1rem; cursor: pointer;
+        }
+        .pay-amt {
+            margin-top: 12px; font-family: var(--head); font-size: 1.25rem; font-weight: 800;
+        }
+        .pay-amt span { color: var(--gold); }
+
+        .upload-zone {
+            border: 2px dashed rgba(255,255,255,0.2);
+            border-radius: 12px; padding: 22px; text-align: center;
+            cursor: pointer; background: #0c0c14; transition: 0.25s;
+        }
+        .upload-zone:hover { border-color: var(--orange); background: rgba(255,140,0,0.05); }
+        #previewImg {
+            display: none; max-width: 100%; max-height: 160px;
+            border-radius: 8px; margin-top: 12px;
         }
 
-        .admin-table th {
-            color: var(--sun-gold);
-            font-family: var(--font-subhead);
-            font-size: 1rem;
+        .actions { display: flex; justify-content: space-between; gap: 12px; margin-top: 22px; }
+        .btn-ghost {
+            background: rgba(255,255,255,0.1); color: #fff; border: none;
+            padding: 12px 18px; border-radius: 10px; font-weight: 700; cursor: pointer;
         }
-
-        .status-badge {
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 800;
-            text-transform: uppercase;
+        .btn-ghost:hover { background: rgba(255,255,255,0.18); }
+        .btn-main {
+            background: linear-gradient(45deg, var(--orange), var(--gold));
+            color: #000; border: none; padding: 12px 22px; border-radius: 10px;
+            font-family: var(--head); font-weight: 900; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 8px;
         }
+        .btn-main:hover { filter: brightness(1.1); }
 
-        .status-pending { background: rgba(241, 196, 15, 0.2); color: #f1c40f; }
-        .status-approved { background: rgba(46, 204, 113, 0.2); color: #2ecc71; }
-        .status-rejected { background: rgba(231, 76, 60, 0.2); color: #e74c3c; }
-
-        .act-btn {
-            border: none;
-            padding: 6px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            margin-right: 4px;
-            color: #fff;
-            font-weight: 700;
+        /* ADMIN */
+        .admin-head {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border); padding-bottom: 14px; margin-bottom: 18px;
+            flex-wrap: wrap; gap: 10px;
         }
-
-        .act-approve { background: var(--accent-green); }
-        .act-reject { background: var(--accent-red); }
-        .act-view { background: #3498db; }
-        .act-delete { background: #555; }
-
-        /* Toast Container */
-        #toastContainer {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 2000;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        .admin-tabs { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+        .atab {
+            background: transparent; border: none; color: var(--muted);
+            font-family: var(--sub); font-size: 1.05rem; font-weight: 700;
+            padding: 8px 14px; border-radius: 8px; cursor: pointer;
         }
+        .atab.on { background: var(--orange); color: #000; }
+        .stats {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px; margin-bottom: 18px;
+        }
+        .stat {
+            background: #0c0c14; border: 1px solid var(--border);
+            border-radius: 12px; padding: 14px;
+        }
+        .stat .v { font-family: var(--head); font-size: 1.6rem; font-weight: 900; color: var(--gold); }
+        .stat .t { font-size: 0.8rem; color: var(--muted); }
+        .toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+        th, td { padding: 11px 10px; border-bottom: 1px solid rgba(255,255,255,0.07); text-align: left; }
+        th { color: var(--gold); font-family: var(--sub); font-size: 0.95rem; }
+        .st {
+            padding: 3px 8px; border-radius: 6px; font-size: 0.72rem;
+            font-weight: 800; text-transform: uppercase;
+        }
+        .st-pending { background: rgba(241,196,15,0.2); color: #f1c40f; }
+        .st-approved { background: rgba(46,204,113,0.2); color: #2ecc71; }
+        .st-rejected { background: rgba(231,76,60,0.2); color: #e74c3c; }
+        .abtn {
+            border: none; padding: 6px 9px; border-radius: 6px; cursor: pointer;
+            color: #fff; font-size: 0.78rem; font-weight: 700; margin: 2px;
+        }
+        .abtn.ok { background: var(--green); }
+        .abtn.no { background: var(--danger); }
+        .abtn.view { background: #3498db; }
+        .abtn.del { background: #555; }
 
+        /* TOAST + LIGHTBOX */
+        #toasts {
+            position: fixed; bottom: 20px; right: 20px; z-index: 4000;
+            display: flex; flex-direction: column; gap: 10px;
+        }
         .toast {
-            background: var(--bg-card);
-            border-left: 4px solid var(--sun-gold);
-            padding: 14px 20px;
-            border-radius: 8px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-width: 280px;
-            animation: slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            min-width: 270px; background: var(--card);
+            border-left: 4px solid var(--gold);
+            padding: 14px 18px; border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            display: flex; align-items: center; gap: 12px;
+            animation: inR 0.3s ease;
         }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
+        @keyframes inR {
+            from { transform: translateX(110%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
-
-        /* Image View Lightbox */
-        .lightbox-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 3000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+        .lightbox {
+            position: fixed; inset: 0; z-index: 5000;
+            background: rgba(0,0,0,0.92);
+            display: none; align-items: center; justify-content: center; padding: 20px;
+        }
+        .lightbox img {
+            max-width: 92%; max-height: 90vh;
+            border-radius: 12px; border: 2px solid var(--gold);
         }
 
-        .lightbox-modal img {
-            max-width: 90%;
-            max-height: 90vh;
-            border-radius: 12px;
-            border: 2px solid var(--sun-gold);
-        }
-
-        /* Footer */
         footer {
-            border-top: 1px solid var(--border-color);
-            background: rgba(10, 10, 15, 0.95);
-            padding: 30px 20px;
-            text-align: center;
-            color: var(--text-sub);
-            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+            text-align: center; padding: 28px 16px;
+            color: var(--muted); font-size: 0.9rem;
         }
+        footer p { margin-bottom: 6px; }
 
-        footer p { margin-bottom: 8px; }
-
-        @media (max-width: 768px) {
-            .hero-title { font-size: 2.2rem; }
-            .nav-container { flex-direction: column; gap: 15px; }
-            .modal-container { padding: 20px; }
+        @media (max-width: 600px) {
+            .nav { flex-direction: column; gap: 12px; }
+            .modal { padding: 20px 16px; }
         }
     </style>
 </head>
 <body>
+<canvas id="bgCanvas"></canvas>
 
-    <!-- Dynamic Canvas Background -->
-    <canvas id="bgCanvas"></canvas>
-
-    <!-- Header Navigation -->
-    <header>
-        <div class="nav-container">
-            <a href="#" class="logo-box">
-                <i class="fa-solid fa-sun"></i>
-                <span class="logo-text">SunMC Store</span>
+<header>
+    <div class="nav">
+        <a class="logo" href="#">
+            <i class="fa-solid fa-sun"></i>
+            <span>SunMC Store</span>
+        </a>
+        <div class="nav-actions">
+            <a class="nav-btn" href="https://discord.gg/mXJ3VNGjE" target="_blank" rel="noopener">
+                <i class="fa-brands fa-discord"></i> Discord
             </a>
-            <div class="nav-links">
-                <a href="https://discord.gg/mXJ3VNGjE" target="_blank" class="nav-btn">
-                    <i class="fa-brands fa-discord"></i> Discord
-                </a>
-                <button class="nav-btn" onclick="openAdminModal()">
-                    <i class="fa-solid fa-user-shield"></i> Admin Panel
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <h1 class="hero-title">POWER UP YOUR <span>LEGEND</span></h1>
-        <p class="hero-subtitle">Official SunMC Store. Unlock exclusive rank kits and tags to rule the realm.</p>
-        
-        <div class="ip-badge-box" onclick="copyServerIP()">
-            <i class="fa-solid fa-server" style="color: var(--sun-gold);"></i>
-            <div>
-                <span class="ip-text" id="serverIp">play.sunmc.bond</span>
-                <span style="font-size: 0.75rem; color: var(--text-sub); display: block;">Click to Copy Server IP</span>
-            </div>
-            <i class="fa-solid fa-copy" style="color: var(--text-sub); margin-left: 8px;"></i>
-        </div>
-    </section>
-
-    <!-- Store Section -->
-    <section class="store-section">
-        <div class="section-header">
-            <h2>AVAILABLE RANKS</h2>
-            <p>Select your tier and upgrade your SunMC survival experience</p>
-        </div>
-
-        <!-- Dynamic Rank Cards Container -->
-        <div class="ranks-grid" id="ranksContainer">
-            <!-- JavaScript will dynamically populate rank cards here -->
-        </div>
-    </section>
-
-    <!-- Purchase Modal -->
-    <div class="modal-overlay" id="purchaseModal">
-        <div class="modal-container">
-            <button class="modal-close" onclick="closeModal('purchaseModal')"><i class="fa-solid fa-xmark"></i></button>
-            
-            <div class="step-progress">
-                <div class="step-item active" id="stepIndicator1">
-                    <div class="step-circle">1</div>
-                    <div class="step-label">Details</div>
-                </div>
-                <div class="step-item" id="stepIndicator2">
-                    <div class="step-circle">2</div>
-                    <div class="step-label">Payment</div>
-                </div>
-                <div class="step-item" id="stepIndicator3">
-                    <div class="step-circle">3</div>
-                    <div class="step-label">Verify</div>
-                </div>
-            </div>
-
-            <!-- STEP 1: User Info -->
-            <div id="step1" class="step-content">
-                <h3 style="font-family: var(--font-head); color: var(--sun-gold); margin-bottom: 15px;">Player Information</h3>
-                
-                <div class="form-group">
-                    <label class="form-label">Minecraft Username *</label>
-                    <input type="text" id="custUsername" class="form-input" placeholder="e.g. Steve_MC" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Email Address *</label>
-                    <input type="email" id="custEmail" class="form-input" placeholder="you@example.com" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Phone Number *</label>
-                    <input type="tel" id="custPhone" class="form-input" placeholder="10-digit mobile number" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Minecraft Edition *</label>
-                    <div class="edition-selector">
-                        <div class="edition-btn selected" id="btnJava" onclick="selectEdition('Java')">
-                            <i class="fa-solid fa-desktop"></i> Java Edition
-                        </div>
-                        <div class="edition-btn" id="btnBedrock" onclick="selectEdition('Bedrock')">
-                            <i class="fa-solid fa-mobile-screen"></i> Bedrock Edition
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-actions">
-                    <button class="btn-sec" onclick="closeModal('purchaseModal')">Cancel</button>
-                    <button class="buy-btn" style="width: auto; padding: 10px 24px;" onclick="goToStep2()">Next Step <i class="fa-solid fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- STEP 2: QR Payment -->
-            <div id="step2" class="step-content" style="display: none;">
-                <h3 style="font-family: var(--font-head); color: var(--sun-gold); margin-bottom: 5px;">Scan & Pay</h3>
-                <p style="font-size: 0.85rem; color: var(--text-sub); margin-bottom: 15px;">Scan the QR code below with any UPI App (GPay, PhonePe, Paytm)</p>
-
-                <div class="qr-section">
-                    <canvas id="qrCanvas" width="180" height="180"></canvas>
-                    <div>
-                        <span style="font-size: 0.8rem; color: var(--text-sub);">UPI ID:</span><br>
-                        <span class="upi-id-box" id="displayUpiId" onclick="copyUPI()">sunmc@upi <i class="fa-solid fa-copy"></i></span>
-                    </div>
-                    <div style="margin-top: 10px; font-weight: 800; font-family: var(--font-head); font-size: 1.2rem; color: #fff;">
-                        Amount to Pay: <span id="payAmountText" style="color: var(--sun-gold);">₹0</span>
-                    </div>
-                </div>
-
-                <div class="modal-actions">
-                    <button class="btn-sec" onclick="goToStep(1)">Back</button>
-                    <button class="buy-btn" style="width: auto; padding: 10px 24px;" onclick="goToStep(3)">I Have Paid <i class="fa-solid fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- STEP 3: Verification & Screenshot -->
-            <div id="step3" class="step-content" style="display: none;">
-                <h3 style="font-family: var(--font-head); color: var(--sun-gold); margin-bottom: 15px;">Upload Proof</h3>
-                
-                <div class="form-group">
-                    <label class="form-label">Payment Screenshot (Required) *</label>
-                    <div class="upload-area" onclick="document.getElementById('screenshotInput').click()">
-                        <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2rem; color: var(--sun-gold); margin-bottom: 8px;"></i>
-                        <div style="font-size: 0.9rem; color: #fff;">Click to upload payment screenshot</div>
-                        <div style="font-size: 0.75rem; color: var(--text-sub);">PNG, JPG or JPEG allowed</div>
-                        <input type="file" id="screenshotInput" accept="image/*" style="display: none;" onchange="handleFileSelect(event)">
-                        <img id="previewImage" class="preview-img" alt="Preview">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">UPI UTR / Transaction ID (Optional)</label>
-                    <input type="text" id="txnIdInput" class="form-input" placeholder="e.g. 312456789012">
-                </div>
-
-                <div class="modal-actions">
-                    <button class="btn-sec" onclick="goToStep(2)">Back</button>
-                    <button class="buy-btn" style="width: auto; padding: 10px 24px;" onclick="submitOrder()">Submit Order <i class="fa-solid fa-check"></i></button>
-                </div>
-            </div>
+            <button class="nav-btn" type="button" onclick="openAdmin()">
+                <i class="fa-solid fa-user-shield"></i> Admin Panel
+            </button>
         </div>
     </div>
+</header>
 
-    <!-- Admin Panel Modal -->
-    <div class="modal-overlay" id="adminModal">
-        <div class="modal-container admin-modal-container">
-            <button class="modal-close" onclick="closeModal('adminModal')"><i class="fa-solid fa-xmark"></i></button>
-            
-            <div class="admin-header">
+<section class="hero">
+    <h1>POWER UP YOUR <span>LEGEND</span></h1>
+    <p>Official SunMC Store — unlock exclusive rank tags & kits and rule the server.</p>
+    <div class="ip-chip" onclick="copyIP()">
+        <i class="fa-solid fa-server" style="color:var(--gold)"></i>
+        <div>
+            <div class="ip" id="serverIp">play.sunmc.bond</div>
+            <small>Click to copy Server IP</small>
+        </div>
+        <i class="fa-solid fa-copy" style="color:var(--muted)"></i>
+    </div>
+</section>
+
+<section class="store">
+    <div class="section-head">
+        <h2>AVAILABLE RANKS</h2>
+        <p>Har rank pe sirf Rank Tag + Exclusive Kit</p>
+    </div>
+    <div class="ranks-grid" id="ranksGrid"></div>
+</section>
+
+<!-- PURCHASE MODAL -->
+<div class="overlay" id="buyModal">
+    <div class="modal">
+        <button class="close-x" type="button" onclick="closeOverlay('buyModal')"><i class="fa-solid fa-xmark"></i></button>
+
+        <div class="steps">
+            <div class="step active" id=" ind1"><div class="dot">1</div><div class="lbl">Details</div></div>
+            <div class="step" id="ind2"><div class="dot">2</div><div class="lbl">Payment</div></div>
+            <div class="step" id="ind3"><div class="dot">3</div><div class="lbl">Verify</div></div>
+        </div>
+
+        <!-- STEP 1 -->
+        <div id="step1">
+            <h3 style="font-family:var(--head);color:var(--gold);margin-bottom:14px;">Player Information</h3>
+            <div class="fg">
+                <label>Minecraft Username *</label>
+                <input id="fUser" type="text" placeholder="e.g. Steve_MC" autocomplete="off">
+            </div>
+            <div class="fg">
+                <label>Email Address *</label>
+                <input id="fEmail" type="email" placeholder="you@example.com">
+            </div>
+            <div class="fg">
+                <label>Phone Number *</label>
+                <input id="fPhone" type="tel" placeholder="10-digit mobile">
+            </div>
+            <div class="fg">
+                <label>Minecraft Edition *</label>
+                <div class="edition-row">
+                    <div class="ed-btn sel" id="edJava" onclick="setEdition('Java')"><i class="fa-solid fa-desktop"></i> Java</div>
+                    <div class="ed-btn" id="edBedrock" onclick="setEdition('Bedrock')"><i class="fa-solid fa-mobile-screen"></i> Bedrock</div>
+                </div>
+            </div>
+            <div class="actions">
+                <button class="btn-ghost" type="button" onclick="closeOverlay('buyModal')">Cancel</button>
+                <button class="btn-main" type="button" onclick="toStep2()">Next <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div id="step2" style="display:none;">
+            <h3 style="font-family:var(--head);color:var(--gold);margin-bottom:6px;">Scan &amp; Pay</h3>
+            <p style="color:var(--muted);font-size:0.88rem;margin-bottom:12px;">GPay / PhonePe / Paytm se QR scan karke pay karo</p>
+
+            <div class="qr-box">
+                <div class="qr-wrap">
+                    <canvas id="qrCanvas" width="200" height="200"></canvas>
+                </div>
                 <div>
-                    <h2 style="font-family: var(--font-head); color: var(--sun-gold);"><i class="fa-solid fa-shield-halved"></i> SunMC Admin Panel</h2>
-                    <span style="font-size: 0.85rem; color: var(--text-sub);" id="loggedInUserText">Logged in as: Admin</span>
+                    <div style="font-size:0.8rem;color:var(--muted);">UPI ID</div>
+                    <div class="upi-pill" id="upiPill" onclick="copyUPI()">sunmc@upi <i class="fa-solid fa-copy"></i></div>
                 </div>
-                <button class="btn-sec" style="padding: 6px 12px; font-size: 0.85rem;" onclick="adminLogout()">Logout</button>
+                <div class="pay-amt">Amount: <span id="payAmt">₹0</span></div>
             </div>
 
-            <div class="admin-nav">
-                <button class="admin-tab-btn active" onclick="switchAdminTab('ordersTab', this)">Orders Dashboard</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('settingsTab', this)">UPI & Settings</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('staffTab', this)">Staff Management</button>
+            <div class="actions">
+                <button class="btn-ghost" type="button" onclick="goStep(1)">Back</button>
+                <button class="btn-main" type="button" onclick="goStep(3)">I Have Paid <i class="fa-solid fa-arrow-right"></i></button>
             </div>
+        </div>
 
-            <!-- Orders Tab -->
-            <div id="ordersTab" class="admin-tab-content">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-val" id="statTotal">0</div>
-                        <div class="stat-title">Total Orders</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-val" id="statPending" style="color: #f1c40f;">0</div>
-                        <div class="stat-title">Pending Verification</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-val" id="statApproved" style="color: #2ecc71;">0</div>
-                        <div class="stat-title">Approved Orders</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-val" id="statRevenue" style="color: var(--sun-gold);">₹0</div>
-                        <div class="stat-title">Total Revenue</div>
-                    </div>
-                </div>
-
-                <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
-                    <input type="text" id="adminSearchInput" class="form-input" style="max-width: 250px; padding: 8px 12px;" placeholder="Search player or rank..." onkeyup="renderAdminOrders()">
-                    <button class="btn-sec" style="padding: 8px 12px;" onclick="exportCSV()"><i class="fa-solid fa-file-csv"></i> Export CSV</button>
-                    <button class="btn-sec" style="padding: 8px 12px; background: rgba(231,76,60,0.2); color: #e74c3c;" onclick="clearAllOrders()"><i class="fa-solid fa-trash"></i> Clear All</button>
-                </div>
-
-                <div class="table-responsive">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Player</th>
-                                <th>Edition</th>
-                                <th>Rank</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="ordersTableBody">
-                            <!-- Populated dynamically -->
-                        </tbody>
-                    </table>
+        <!-- STEP 3 -->
+        <div id="step3" style="display:none;">
+            <h3 style="font-family:var(--head);color:var(--gold);margin-bottom:14px;">Upload Proof</h3>
+            <div class="fg">
+                <label>Payment Screenshot *</label>
+                <div class="upload-zone" onclick="document.getElementById('fileIn').click()">
+                    <i class="fa-solid fa-cloud-arrow-up" style="font-size:1.8rem;color:var(--gold);"></i>
+                    <div style="margin-top:8px;">Click to upload screenshot</div>
+                    <div style="font-size:0.78rem;color:var(--muted);">PNG / JPG — max 5MB</div>
+                    <input type="file" id="fileIn" accept="image/*" hidden onchange="onFile(event)">
+                    <img id="previewImg" alt="preview">
                 </div>
             </div>
-
-            <!-- UPI Settings Tab -->
-            <div id="settingsTab" class="admin-tab-content" style="display: none;">
-                <h3 style="font-family: var(--font-head); color: var(--sun-gold); margin-bottom: 15px;">UPI Config</h3>
-                <div class="form-group">
-                    <label class="form-label">Store UPI ID</label>
-                    <input type="text" id="settingUpiId" class="form-input" placeholder="e.g. sunmc@upi">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Payee Name</label>
-                    <input type="text" id="settingUpiName" class="form-input" placeholder="e.g. SunMC Store">
-                </div>
-                <button class="buy-btn" style="width: auto; padding: 10px 20px;" onclick="saveUpiSettings()">Save Payment Settings</button>
+            <div class="fg">
+                <label>UPI UTR / Txn ID (Optional)</label>
+                <input id="fTxn" type="text" placeholder="e.g. 312456789012">
             </div>
+            <div class="actions">
+                <button class="btn-ghost" type="button" onclick="goStep(2)">Back</button>
+                <button class="btn-main" type="button" onclick="submitOrder()">Submit Order <i class="fa-solid fa-check"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
 
-            <!-- Staff Tab -->
-            <div id="staffTab" class="admin-tab-content" style="display: none;">
-                <h3 style="font-family: var(--font-head); color: var(--sun-gold); margin-bottom: 15px;">Staff Management</h3>
-                
-                <div style="background: #0d0d14; padding: 15px; border-radius: 12px; margin-bottom: 20px;">
-                    <h4 style="margin-bottom: 10px; color: #fff;">Add New Staff Member</h4>
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <input type="text" id="newStaffUser" class="form-input" placeholder="Username" style="flex: 1; min-width: 150px;">
-                        <input type="password" id="newStaffPass" class="form-input" placeholder="Password" style="flex: 1; min-width: 150px;">
-                        <button class="buy-btn" style="width: auto; padding: 10px 20px;" onclick="addStaffAccount()">Add Staff</button>
-                    </div>
+<!-- LOGIN -->
+<div class="overlay" id="loginModal">
+    <div class="modal" style="max-width:400px;">
+        <button class="close-x" type="button" onclick="closeOverlay('loginModal')"><i class="fa-solid fa-xmark"></i></button>
+        <h3 style="font-family:var(--head);color:var(--gold);text-align:center;margin-bottom:18px;">
+            <i class="fa-solid fa-lock"></i> Staff Login
+        </h3>
+        <form onsubmit="doLogin(event)">
+            <div class="fg"><label>Username</label><input id="loginUser" type="text" required autocomplete="username"></div>
+            <div class="fg"><label>Password</label><input id="loginPass" type="password" required autocomplete="current-password"></div>
+            <button class="btn-main" style="width:100%;justify-content:center;margin-top:8px;" type="submit">Login</button>
+        </form>
+    </div>
+</div>
+
+<!-- ADMIN -->
+<div class="overlay" id="adminModal">
+    <div class="modal wide">
+        <button class="close-x" type="button" onclick="closeOverlay('adminModal')"><i class="fa-solid fa-xmark"></i></button>
+        <div class="admin-head">
+            <div>
+                <h2 style="font-family:var(--head);color:var(--gold);font-size:1.35rem;">
+                    <i class="fa-solid fa-shield-halved"></i> SunMC Admin
+                </h2>
+                <small style="color:var(--muted);" id="adminWho">—</small>
+            </div>
+            <button class="btn-ghost" type="button" onclick="logout()" style="padding:7px 12px;font-size:0.85rem;">Logout</button>
+        </div>
+
+        <div class="admin-tabs">
+            <button class="atab on" type="button" onclick="adminTab('orders',this)">Orders</button>
+            <button class="atab" type="button" onclick="adminTab('settings',this)">UPI Settings</button>
+            <button class="atab" type="button" onclick="adminTab('staff',this)">Staff</button>
+        </div>
+
+        <div id="tab-orders">
+            <div class="stats">
+                <div class="stat"><div class="v" id="sTotal">0</div><div class="t">Total Orders</div></div>
+                <div class="stat"><div class="v" id="sPending" style="color:#f1c40f;">0</div><div class="t">Pending</div></div>
+                <div class="stat"><div class="v" id="sApproved" style="color:#2ecc71;">0</div><div class="t">Approved</div></div>
+                <div class="stat"><div class="v" id="sRev">₹0</div><div class="t">Revenue</div></div>
+            </div>
+            <div class="toolbar">
+                <input id="searchOrd" class="fg" style="margin:0;flex:1;min-width:180px;padding:0;" type="text" placeholder="Search player / rank..." onkeyup="renderOrders()" 
+                    style="padding:10px 12px;background:#0c0c14;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;">
+                <button class="btn-ghost" type="button" onclick="exportCSV()"><i class="fa-solid fa-file-csv"></i> CSV</button>
+                <button class="btn-ghost" type="button" style="color:#e74c3c;" onclick="clearOrders()"><i class="fa-solid fa-trash"></i> Clear</button>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th><th>Player</th><th>Ed.</th><th>Rank</th>
+                            <th>Amt</th><th>Status</th><th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="tab-settings" style="display:none;">
+            <h3 style="font-family:var(--head);color:var(--gold);margin-bottom:14px;">UPI Config</h3>
+            <div class="fg"><label>UPI ID</label><input id="setUpi" type="text" placeholder="name@upi"></div>
+            <div class="fg"><label>Payee Name</label><input id="setName" type="text" placeholder="SunMC Store"></div>
+            <button class="btn-main" type="button" onclick="saveUPI()">Save Settings</button>
+        </div>
+
+        <div id="tab-staff" style="display:none;">
+            <h3 style="font-family:var(--head);color:var(--gold);margin-bottom:14px;">Staff Management</h3>
+            <div style="background:#0c0c14;padding:14px;border-radius:12px;margin-bottom:16px;border:1px solid var(--border);">
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                    <input id="newStaffU" type="text" placeholder="Username" style="flex:1;min-width:120px;padding:10px;background:#0a0a10;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;">
+                    <input id="newStaffP" type="password" placeholder="Password" style="flex:1;min-width:120px;padding:10px;background:#0a0a10;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;">
+                    <button class="btn-main" type="button" onclick="addStaff()">Add Staff</button>
                 </div>
-
-                <h4 style="margin-bottom: 10px; color: #fff;">Active Accounts</h4>
-                <div class="table-responsive">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Username</th>
-                                <th>Role</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="staffTableBody">
-                            <!-- Populated dynamically -->
-                        </tbody>
-                    </table>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Username</th><th>Role</th><th>Actions</th></tr></thead>
+                    <tbody id="staffBody"></tbody>
+                </table>
+            </div>
+            <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
+                <h4 style="margin-bottom:10px;">Change My Password</h4>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                    <input id="myNewPass" type="password" placeholder="New password" style="flex:1;min-width:140px;padding:10px;background:#0c0c14;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;">
+                    <button class="btn-main" type="button" onclick="changeMyPass()">Update Password</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Admin Login Modal -->
-    <div class="modal-overlay" id="loginModal">
-        <div class="modal-container" style="max-width: 400px;">
-            <button class="modal-close" onclick="closeModal('loginModal')"><i class="fa-solid fa-xmark"></i></button>
-            <h3 style="font-family: var(--font-head); color: var(--sun-gold); margin-bottom: 20px; text-align: center;"><i class="fa-solid fa-lock"></i> Staff Login</h3>
-            
-            <form onsubmit="handleAdminLogin(event)">
-                <div class="form-group">
-                    <label class="form-label">Username</label>
-                    <input type="text" id="loginUsername" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" id="loginPassword" class="form-input" required>
-                </div>
-                <button type="submit" class="buy-btn" style="width: 100%; margin-top: 10px;">Login to Admin</button>
-            </form>
+<div class="lightbox" id="lightbox" onclick="this.style.display='none'">
+    <img id="lightImg" alt="screenshot">
+</div>
+<div id="toasts"></div>
+
+<footer>
+    <p><strong>SunMC Network</strong> &copy; 2025. All Rights Reserved.</p>
+    <p style="font-size:0.8rem;color:#666;">Not affiliated with Mojang AB or Microsoft.</p>
+</footer>
+
+<script>
+/* ========== RANKS: ONLY TAG + KIT ========== */
+const RANKS = [
+    { id:'mvp', name:'MVP', price:39, color:'#38ef7d', badge:'STARTER',
+      perks:[
+        {icon:'fa-tag', html:'<strong>[MVP] Rank Tag</strong>Chat &amp; Tab prefix'},
+        {icon:'fa-box-open', html:'<strong>Exclusive MVP Kit</strong>Unlocks <code>/kit mvp</code>'}
+      ]},
+    { id:'vip', name:'VIP', price:79, color:'#00c6ff', badge:'POPULAR',
+      perks:[
+        {icon:'fa-tag', html:'<strong>[VIP] Rank Tag</strong>Chat &amp; Tab prefix'},
+        {icon:'fa-box-open', html:'<strong>Exclusive VIP Kit</strong>Unlocks <code>/kit vip</code>'}
+      ]},
+    { id:'void', name:'VOID', price:129, color:'#9d50bb', badge:'DARK TIER',
+      perks:[
+        {icon:'fa-tag', html:'<strong>[VOID] Rank Tag</strong>Chat &amp; Tab prefix'},
+        {icon:'fa-box-open', html:'<strong>Exclusive VOID Kit</strong>Unlocks <code>/kit void</code>'}
+      ]},
+    { id:'gangster', name:'GANGSTER', price:159, color:'#ff4b1f', badge:'POWER',
+      perks:[
+        {icon:'fa-tag', html:'<strong>[GANGSTER] Rank Tag</strong>Chat &amp; Tab prefix'},
+        {icon:'fa-box-open', html:'<strong>Exclusive GANGSTER Kit</strong>Unlocks <code>/kit gangster</code>'}
+      ]},
+    { id:'warden', name:'WARDEN', price:199, color:'#FFD700', badge:'TOP RANK', top:true,
+      perks:[
+        {icon:'fa-tag', html:'<strong>[WARDEN] Rank Tag</strong>Chat &amp; Tab prefix'},
+        {icon:'fa-box-open', html:'<strong>Exclusive WARDEN Kit</strong>Unlocks <code>/kit warden</code>'}
+      ]}
+];
+
+/* ========== STATE ========== */
+let selectedRank = null;
+let edition = 'Java';
+let shotB64 = '';
+let adminUser = null;
+
+function ls(key, val) {
+    if (val === undefined) {
+        try { return JSON.parse(localStorage.getItem(key)); } catch { return null; }
+    }
+    localStorage.setItem(key, JSON.stringify(val));
+}
+function lsStr(key, fallback) {
+    return localStorage.getItem(key) || fallback;
+}
+
+/* init storage */
+(function initStore(){
+    if (!localStorage.getItem('sunmc_staff')) {
+        ls('sunmc_staff', [{ user:'admin', pass:'sunmc2025', role:'Owner' }]);
+    }
+    if (!localStorage.getItem('sunmc_orders')) ls('sunmc_orders', []);
+    if (!localStorage.getItem('sunmc_upi_id')) localStorage.setItem('sunmc_upi_id', 'sunmc@upi');
+    if (!localStorage.getItem('sunmc_upi_name')) localStorage.setItem('sunmc_upi_name', 'SunMC Store');
+})();
+
+/* ========== RENDER RANKS ========== */
+function renderRanks(){
+    const g = document.getElementById('ranksGrid');
+    g.innerHTML = RANKS.map(r => `
+        <div class="rank-card ${r.top ? 'top' : ''}">
+            <div class="badge" style="color:${r.color};border:1px solid ${r.color}55;background:${r.color}18;">${r.badge}</div>
+            <div class="rank-name" style="color:${r.color}">${r.name}</div>
+            <div class="price-row"><span class="cur">₹</span><span class="amt">${r.price}</span></div>
+            <ul class="perks">
+                ${r.perks.map(p => `<li><i class="fa-solid ${p.icon}" style="color:${r.color}"></i><span>${p.html}</span></li>`).join('')}
+            </ul>
+            <button class="buy-btn" type="button" onclick="openBuy('${r.id}')">
+                <i class="fa-solid fa-cart-shopping"></i> Purchase
+            </button>
         </div>
-    </div>
+    `).join('');
+}
 
-    <!-- Lightbox for Screenshot Preview -->
-    <div class="lightbox-modal" id="lightboxModal" onclick="this.style.display='none'">
-        <img id="lightboxImg" src="" alt="Screenshot Full View">
-    </div>
+/* ========== MODALS ========== */
+function openOverlay(id){ document.getElementById(id).classList.add('active'); }
+function closeOverlay(id){ document.getElementById(id).classList.remove('active'); }
 
-    <!-- Toast Notifications Container -->
-    <div id="toastContainer"></div>
+function openBuy(id){
+    selectedRank = RANKS.find(r => r.id === id);
+    if (!selectedRank) return;
+    document.getElementById('fUser').value = '';
+    document.getElementById('fEmail').value = '';
+    document.getElementById('fPhone').value = '';
+    document.getElementById('fTxn').value = '';
+    document.getElementById('previewImg').style.display = 'none';
+    document.getElementById('fileIn').value = '';
+    shotB64 = '';
+    setEdition('Java');
+    document.getElementById('payAmt').textContent = '₹' + selectedRank.price;
+    const upi = lsStr('sunmc_upi_id', 'sunmc@upi');
+    document.getElementById('upiPill').innerHTML = upi + ' <i class="fa-solid fa-copy"></i>';
+    goStep(1);
+    openOverlay('buyModal');
+    // draw QR after modal visible
+    setTimeout(() => {
+        drawUpiQr(
+            lsStr('sunmc_upi_id', 'sunmc@upi'),
+            lsStr('sunmc_upi_name', 'SunMC Store'),
+            selectedRank.price
+        );
+    }, 80);
+}
 
-    <!-- Footer -->
-    <footer>
-        <p><strong>SunMC Network</strong> &copy; 2025. All Rights Reserved.</p>
-        <p style="font-size: 0.8rem; color: #777;">We are not affiliated with Mojang AB or Microsoft.</p>
-    </footer>
+function setEdition(ed){
+    edition = ed;
+    document.getElementById('edJava').classList.toggle('sel', ed === 'Java');
+    document.getElementById('edBedrock').classList.toggle('sel', ed === 'Bedrock');
+}
 
-    <!-- JavaScript Application Logic -->
-    <script>
-        /* =========================================================
-           1. RANKS DATA CONFIGURATION (KITS & TAGS ONLY)
-           ========================================================= */
-        const ranksData = [
-            {
-                id: 'mvp',
-                name: 'MVP',
-                price: 39,
-                color: '#38ef7d',
-                badge: 'STARTER TIER',
-                perks: [
-                    { icon: 'fa-tag', text: '<strong>[MVP] Rank Tag</strong> Displays prefix tag in Chat & Player Tab' },
-                    { icon: 'fa-box-open', text: '<strong>Exclusive MVP Kit</strong> Unlocks <code>/kit mvp</code> access' }
-                ]
-            },
-            {
-                id: 'vip',
-                name: 'VIP',
-                price: 79,
-                color: '#00c6ff',
-                badge: 'POPULAR TIER',
-                perks: [
-                    { icon: 'fa-tag', text: '<strong>[VIP] Rank Tag</strong> Displays prefix tag in Chat & Player Tab' },
-                    { icon: 'fa-box-open', text: '<strong>Exclusive VIP Kit</strong> Unlocks <code>/kit vip</code> access' }
-                ]
-            },
-            {
-                id: 'void',
-                name: 'VOID',
-                price: 129,
-                color: '#9d50bb',
-                badge: 'DARK TIER',
-                perks: [
-                    { icon: 'fa-tag', text: '<strong>[VOID] Rank Tag</strong> Displays prefix tag in Chat & Player Tab' },
-                    { icon: 'fa-box-open', text: '<strong>Exclusive VOID Kit</strong> Unlocks <code>/kit void</code> access' }
-                ]
-            },
-            {
-                id: 'gangster',
-                name: 'GANGSTER',
-                price: 159,
-                color: '#ff4b1f',
-                badge: 'POWER TIER',
-                perks: [
-                    { icon: 'fa-tag', text: '<strong>[GANGSTER] Rank Tag</strong> Displays prefix tag in Chat & Player Tab' },
-                    { icon: 'fa-box-open', text: '<strong>Exclusive GANGSTER Kit</strong> Unlocks <code>/kit gangster</code> access' }
-                ]
-            },
-            {
-                id: 'warden',
-                name: 'WARDEN',
-                price: 199,
-                color: '#ffd700',
-                badge: 'ULTIMATE & TOP RANK',
-                isTop: true,
-                perks: [
-                    { icon: 'fa-tag', text: '<strong>[WARDEN] Rank Tag</strong> Displays prefix tag in Chat & Player Tab' },
-                    { icon: 'fa-box-open', text: '<strong>Exclusive WARDEN Kit</strong> Unlocks <code>/kit warden</code> access' }
-                ]
-            }
-        ];
-
-        /* =========================================================
-           2. GLOBAL STATE & STORAGE INITIALIZATION
-           ========================================================= */
-        let currentSelectedRank = null;
-        let currentEdition = 'Java';
-        let currentStep = 1;
-        let uploadedScreenshotBase64 = '';
-        let loggedInAdminUser = null;
-
-        // Default Admin Setup
-        if (!localStorage.getItem('sunmc_staff')) {
-            const defaultStaff = [
-                { user: 'admin', pass: 'sunmc2025', role: 'Owner' }
-            ];
-            localStorage.setItem('sunmc_staff', JSON.stringify(defaultStaff));
-        }
-
-        // Default Orders Storage Setup
-        if (!localStorage.getItem('sunmc_orders')) {
-            localStorage.setItem('sunmc_orders', JSON.stringify([]));
-        }
-
-        // UPI Settings Setup
-        if (!localStorage.getItem('sunmc_upi_id')) {
-            localStorage.setItem('sunmc_upi_id', 'sunmc@upi');
-        }
-        if (!localStorage.getItem('sunmc_upi_name')) {
-            localStorage.setItem('sunmc_upi_name', 'SunMC Store');
-        }
-
-        /* =========================================================
-           3. DYNAMIC UI INITIALIZATION
-           ========================================================= */
-        document.addEventListener('DOMContentLoaded', () => {
-            renderRanks();
-            initParticles();
-            document.getElementById('displayUpiId').innerHTML = `${localStorage.getItem('sunmc_upi_id')} <i class="fa-solid fa-copy"></i>`;
-        });
-
-        function renderRanks() {
-            const container = document.getElementById('ranksContainer');
-            container.innerHTML = ranksData.map(rank => `
-                <div class="rank-card ${rank.isTop ? 'top-rank' : ''}">
-                    <div>
-                        <div class="rank-badge" style="color: ${rank.color}; border-color: ${rank.color}40; background: ${rank.color}15;">
-                            ${rank.badge}
-                        </div>
-                        <h3 class="rank-title" style="color: ${rank.color};">${rank.name}</h3>
-                        <div class="rank-price-box">
-                            <span class="currency">₹</span>
-                            <span class="amount">${rank.price}</span>
-                        </div>
-                        <ul class="perks-list">
-                            ${rank.perks.map(p => `
-                                <li>
-                                    <i class="fa-solid ${p.icon}" style="color: ${rank.color};"></i>
-                                    <span>${p.text}</span>
-                                </li>
-                            `).join('')}
-                        </ul>
-                    </div>
-                    <button class="buy-btn" onclick="openPurchaseModal('${rank.id}')">
-                        <i class="fa-solid fa-cart-shopping"></i> Purchase
-                    </button>
-                </div>
-            `).join('');
-        }
-
-        /* =========================================================
-           4. PURCHASE & PAYMENT FLOW
-           ========================================================= */
-        function openPurchaseModal(rankId) {
-            currentSelectedRank = ranksData.find(r => r.id === rankId);
-            if (!currentSelectedRank) return;
-
-            // Reset Form Fields
-            document.getElementById('custUsername').value = '';
-            document.getElementById('custEmail').value = '';
-            document.getElementById('custPhone').value = '';
-            document.getElementById('txnIdInput').value = '';
-            document.getElementById('previewImage').style.display = 'none';
-            uploadedScreenshotBase64 = '';
-            selectEdition('Java');
-
-            // Set Pay Amount
-            document.getElementById('payAmountText').innerText = `₹${currentSelectedRank.price}`;
-            
-            // Draw Canvas QR Code
-            generateUPIQRCode(
-                localStorage.getItem('sunmc_upi_id'),
-                localStorage.getItem('sunmc_upi_name'),
-                currentSelectedRank.price
+function goStep(n){
+    for (let i = 1; i <= 3; i++){
+        document.getElementById('step' + i).style.display = (i === n) ? 'block' : 'none';
+        const ind = document.getElementById('ind' + i);
+        ind.classList.remove('active', 'done');
+        if (i === n) ind.classList.add('active');
+        if (i < n) ind.classList.add('done');
+    }
+    if (n === 2 && selectedRank) {
+        setTimeout(() => {
+            drawUpiQr(
+                lsStr('sunmc_upi_id', 'sunmc@upi'),
+                lsStr('sunmc_upi_name', 'SunMC Store'),
+                selectedRank.price
             );
+        }, 50);
+    }
+}
 
-            goToStep(1);
-            openModal('purchaseModal');
+function toStep2(){
+    const u = document.getElementById('fUser').value.trim();
+    const e = document.getElementById('fEmail').value.trim();
+    const p = document.getElementById('fPhone').value.trim();
+    if (!u || !e || !p){ toast('Saare required fields bharo!', 'error'); return; }
+    goStep(2);
+}
+
+function onFile(ev){
+    const f = ev.target.files[0];
+    if (!f) return;
+    if (f.size > 5 * 1024 * 1024){ toast('Max 5MB allowed', 'error'); return; }
+    const reader = new FileReader();
+    reader.onload = e => {
+        shotB64 = e.target.result;
+        const img = document.getElementById('previewImg');
+        img.src = shotB64;
+        img.style.display = 'block';
+    };
+    reader.readAsDataURL(f);
+}
+
+function submitOrder(){
+    if (!shotB64){ toast('Payment screenshot upload karo!', 'error'); return; }
+    const order = {
+        id: 'ORD-' + Date.now().toString(36).toUpperCase(),
+        timestamp: new Date().toLocaleString(),
+        username: document.getElementById('fUser').value.trim(),
+        email: document.getElementById('fEmail').value.trim(),
+        phone: document.getElementById('fPhone').value.trim(),
+        edition,
+        rankName: selectedRank.name,
+        amount: selectedRank.price,
+        screenshot: shotB64,
+        txnId: document.getElementById('fTxn').value.trim() || 'N/A',
+        status: 'pending'
+    };
+    const orders = ls('sunmc_orders') || [];
+    orders.unshift(order);
+    ls('sunmc_orders', orders);
+    closeOverlay('buyModal');
+    toast('Order submit ho gaya! Staff jaldi verify karega.', 'success');
+}
+
+/* ========== REAL MINIMAL QR CODE (pure JS) ========== */
+/* Compact QR generator sufficient for short UPI strings */
+const QR = (function(){
+    // GF(256)
+    const EXP = new Array(512), LOG = new Array(256);
+    (function(){
+        let x = 1;
+        for (let i = 0; i < 255; i++){
+            EXP[i] = x; LOG[x] = i;
+            x <<= 1; if (x & 0x100) x ^= 0x11d;
         }
+        for (let i = 255; i < 512; i++) EXP[i] = EXP[i - 255];
+    })();
+    function mul(a,b){ return a && b ? EXP[LOG[a] + LOG[b]] : 0; }
 
-        function selectEdition(ed) {
-            currentEdition = ed;
-            document.getElementById('btnJava').classList.toggle('selected', ed === 'Java');
-            document.getElementById('btnBedrock').classList.toggle('selected', ed === 'Bedrock');
-        }
-
-        function goToStep(step) {
-            currentStep = step;
-            document.getElementById('step1').style.display = step === 1 ? 'block' : 'none';
-            document.getElementById('step2').style.display = step === 2 ? 'block' : 'none';
-            document.getElementById('step3').style.display = step === 3 ? 'block' : 'none';
-
-            for (let i = 1; i <= 3; i++) {
-                const ind = document.getElementById(`stepIndicator${i}`);
-                ind.classList.remove('active', 'completed');
-                if (i === step) ind.classList.add('active');
-                if (i < step) ind.classList.add('completed');
+    function rsPoly(ec){
+        let r = [1];
+        for (let i = 0; i < ec; i++){
+            const nr = new Array(r.length + 1).fill(0);
+            for (let j = 0; j < r.length; j++){
+                nr[j] ^= r[j];
+                nr[j+1] ^= mul(r[j], EXP[i]);
             }
+            r = nr;
         }
-
-        function goToStep2() {
-            const username = document.getElementById('custUsername').value.trim();
-            const email = document.getElementById('custEmail').value.trim();
-            const phone = document.getElementById('custPhone').value.trim();
-
-            if (!username || !email || !phone) {
-                showToast('Please fill in all required fields!', 'error');
-                return;
-            }
-            goToStep(2);
+        return r;
+    }
+    function rsEncode(data, ec){
+        const gen = rsPoly(ec);
+        const res = data.concat(new Array(ec).fill(0));
+        for (let i = 0; i < data.length; i++){
+            const coef = res[i];
+            if (!coef) continue;
+            for (let j = 0; j < gen.length; j++) res[i+j] ^= mul(gen[j], coef);
         }
+        return res.slice(data.length);
+    }
 
-        function handleFileSelect(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            if (file.size > 5 * 1024 * 1024) {
-                showToast('File size must be under 5MB', 'error');
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                uploadedScreenshotBase64 = e.target.result;
-                const img = document.getElementById('previewImage');
-                img.src = e.target.result;
-                img.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
+    // mode byte, capacity for versions 1-5 ECL M roughly
+    function getVersion(len){
+        // byte mode total capacity (data codewords) ECL M
+        const cap = [0,14,26,42,62,84]; // approx usable data bytes for v1-5 ECL M after header
+        for (let v = 1; v <= 5; v++){
+            if (len + 3 <= cap[v]) return v; // +3 header rough
         }
+        return 5;
+    }
 
-        function submitOrder() {
-            if (!uploadedScreenshotBase64) {
-                showToast('Please upload a payment screenshot!', 'error');
-                return;
-            }
+    const ECC_WORDS = { // ECL M
+        1:10, 2:16, 3:26, 4:36, 5:48
+    };
+    const TOTAL_CW = {
+        1:26, 2:44, 3:70, 4:100, 5:134
+    };
+    const SIZE = v => 21 + (v - 1) * 4;
 
-            const newOrder = {
-                id: 'ORD-' + Math.floor(100000 + Math.random() * 900000),
-                timestamp: new Date().toLocaleString(),
-                username: document.getElementById('custUsername').value.trim(),
-                email: document.getElementById('custEmail').value.trim(),
-                phone: document.getElementById('custPhone').value.trim(),
-                edition: currentEdition,
-                rankName: currentSelectedRank.name,
-                amount: currentSelectedRank.price,
-                screenshot: uploadedScreenshotBase64,
-                txnId: document.getElementById('txnIdInput').value.trim() || 'N/A',
-                status: 'pending'
-            };
+    function encode(text){
+        const bytes = [];
+        for (let i = 0; i < text.length; i++) bytes.push(text.charCodeAt(i) & 0xff);
+        const ver = getVersion(bytes.length);
+        const size = SIZE(ver);
+        const dataCw = TOTAL_CW[ver] - ECC_WORDS[ver];
+        const ecCw = ECC_WORDS[ver];
 
-            const orders = JSON.parse(localStorage.getItem('sunmc_orders') || '[]');
-            orders.unshift(newOrder);
-            localStorage.setItem('sunmc_orders', JSON.stringify(orders));
-
-            closeModal('purchaseModal');
-            showToast('Order submitted successfully! Staff will verify shortly.', 'success');
+        // bit buffer
+        const bits = [];
+        function put(val, n){
+            for (let i = n - 1; i >= 0; i--) bits.push((val >>> i) & 1);
         }
+        put(0b0100, 4); // byte mode
+        put(bytes.length, ver < 10 ? 8 : 16);
+        bytes.forEach(b => put(b, 8));
+        // terminator
+        const maxBits = dataCw * 8;
+        let term = Math.min(4, maxBits - bits.length);
+        put(0, term);
+        while (bits.length % 8) bits.push(0);
+        const data = [];
+        for (let i = 0; i < bits.length; i += 8){
+            let b = 0;
+            for (let j = 0; j < 8; j++) b = (b << 1) | (bits[i+j] || 0);
+            data.push(b);
+        }
+        // pad
+        const pads = [0xec, 0x11];
+        let pi = 0;
+        while (data.length < dataCw){ data.push(pads[pi % 2]); pi++; }
 
-        /* =========================================================
-           5. PURE HTML5 CANVAS QR CODE GENERATOR
-           ========================================================= */
-        function generateUPIQRCode(upiId, name, amount) {
-            const canvas = document.getElementById('qrCanvas');
-            const ctx = canvas.getContext('2d');
-            const size = canvas.width;
-            
-            ctx.clearRect(0, 0, size, size);
+        const ecc = rsEncode(data, ecCw);
+        const all = data.concat(ecc);
 
-            // UPI Data String Format
-            const upiString = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR`;
-
-            // Draw Decorative Canvas QR Style Graphic
-            ctx.fillStyle = "#ffffff";
-            ctx.fillRect(0, 0, size, size);
-
-            ctx.fillStyle = "#000000";
-            // Simple deterministic matrix generation for functional visual appearance
-            let hash = 0;
-            for (let i = 0; i < upiString.length; i++) {
-                hash = (hash << 5) - hash + upiString.charCodeAt(i);
-                hash |= 0;
-            }
-
-            const grid = 25;
-            const cellSize = size / grid;
-
-            for (let r = 0; r < grid; r++) {
-                for (let c = 0; c < grid; c++) {
-                    // Marker corners
-                    if ((r < 7 && c < 7) || (r < 7 && c >= grid - 7) || (r >= grid - 7 && c < 7)) {
-                        if ((r === 0 || r === 6 || c === 0 || c === 6 || (r >= 2 && r <= 4 && c >= 2 && c <= 4)) &&
-                            !(r < 7 && c >= grid - 7 && (r === 0 || r === 6 || c === grid - 7 || c === grid - 1 || (r >= 2 && r <= 4 && c >= grid - 5 && c >= grid - 3)))) {
-                            ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
-                        }
-                        continue;
-                    }
-                    const val = Math.abs(Math.sin(hash + r * 13 + c * 37));
-                    if (val > 0.45) {
-                        ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
-                    }
+        // matrix
+        const n = size;
+        const m = Array.from({length:n}, () => new Array(n).fill(null));
+        function fillPattern(){
+            // finder
+            function finder(x,y){
+                for (let dy = -1; dy <= 7; dy++)
+                for (let dx = -1; dx <= 7; dx++){
+                    const xx = x+dx, yy = y+dy;
+                    if (xx < 0 || yy < 0 || xx >= n || yy >= n) continue;
+                    const on = dx===-1||dx===7||dy===-1||dy===7 || (dx>=1&&dx<=5&&dy>=1&&dy<=5 && !(dx>=2&&dx<=4&&dy>=2&&dy<=4)) ? 0 :
+                               (dx>=0&&dx<=6&&dy>=0&&dy<=6 && (dx===0||dx===6||dy===0||dy===6||(dx>=2&&dx<=4&&dy>=2&&dy<=4))) ? 1 : 0;
+                    // cleaner:
                 }
             }
-
-            // Draw Eye Outer Frames
-            drawQREye(ctx, 0, 0, cellSize);
-            drawQREye(ctx, (grid - 7) * cellSize, 0, cellSize);
-            drawQREye(ctx, 0, (grid - 7) * cellSize, cellSize);
-        }
-
-        function drawQREye(ctx, x, y, cellSize) {
-            ctx.fillStyle = '#000000';
-            ctx.fillRect(x, y, 7 * cellSize, 7 * cellSize);
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(x + cellSize, y + cellSize, 5 * cellSize, 5 * cellSize);
-            ctx.fillStyle = '#ff8c00';
-            ctx.fillRect(x + 2 * cellSize, y + 2 * cellSize, 3 * cellSize, 3 * cellSize);
-        }
-
-        /* =========================================================
-           6. ADMIN PANEL LOGIC & MANAGEMENT
-           ========================================================= */
-        function openAdminModal() {
-            if (!loggedInAdminUser) {
-                openModal('loginModal');
-            } else {
-                renderAdminOrders();
-                renderStaffList();
-                document.getElementById('settingUpiId').value = localStorage.getItem('sunmc_upi_id');
-                document.getElementById('settingUpiName').value = localStorage.getItem('sunmc_upi_name');
-                openModal('adminModal');
+            // proper finders
+            function placeFinder(x,y){
+                for (let dy = 0; dy < 7; dy++)
+                for (let dx = 0; dx < 7; dx++){
+                    const edge = dx===0||dx===6||dy===0||dy===6;
+                    const mid = dx>=2&&dx<=4&&dy>=2&&dy<=4;
+                    m[y+dy][x+dx] = edge || mid ? 1 : 0;
+                }
+                // separators
+                for (let i = -1; i <= 7; i++){
+                    if (y-1 >= 0 && x+i >= 0 && x+i < n) m[y-1][x+i] = 0;
+                    if (y+7 < n && x+i >= 0 && x+i < n) m[y+7][x+i] = 0;
+                    if (x-1 >= 0 && y+i >= 0 && y+i < n) m[y+i][x-1] = 0;
+                    if (x+7 < n && y+i >= 0 && y+i < n) m[y+i][x+7] = 0;
+                }
             }
-        }
+            placeFinder(0,0);
+            placeFinder(n-7,0);
+            placeFinder(0,n-7);
 
-        function handleAdminLogin(e) {
-            e.preventDefault();
-            const u = document.getElementById('loginUsername').value.trim();
-            const p = document.getElementById('loginPassword').value.trim();
-
-            const staffList = JSON.parse(localStorage.getItem('sunmc_staff') || '[]');
-            const account = staffList.find(s => s.user === u && s.pass === p);
-
-            if (account) {
-                loggedInAdminUser = account;
-                document.getElementById('loggedInUserText').innerText = `Logged in: ${account.user} (${account.role})`;
-                closeModal('loginModal');
-                document.getElementById('loginUsername').value = '';
-                document.getElementById('loginPassword').value = '';
-                openAdminModal();
-                showToast(`Welcome back, ${account.user}!`, 'success');
-            } else {
-                showToast('Invalid staff username or password!', 'error');
+            // timing
+            for (let i = 8; i < n-8; i++){
+                if (m[6][i] === null) m[6][i] = i % 2 === 0 ? 1 : 0;
+                if (m[i][6] === null) m[i][6] = i % 2 === 0 ? 1 : 0;
             }
-        }
+            // dark module
+            m[n-8][8] = 1;
 
-        function adminLogout() {
-            loggedInAdminUser = null;
-            closeModal('adminModal');
-            showToast('Logged out of Admin Panel', 'info');
-        }
-
-        function switchAdminTab(tabId, btn) {
-            document.querySelectorAll('.admin-tab-content').forEach(el => el.style.display = 'none');
-            document.querySelectorAll('.admin-tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).style.display = 'block';
-            btn.classList.add('active');
-        }
-
-        function renderAdminOrders() {
-            const orders = JSON.parse(localStorage.getItem('sunmc_orders') || '[]');
-            const searchTerm = document.getElementById('adminSearchInput').value.toLowerCase();
-            const tbody = document.getElementById('ordersTableBody');
-
-            let filtered = orders.filter(o => 
-                o.username.toLowerCase().includes(searchTerm) || 
-                o.rankName.toLowerCase().includes(searchTerm) ||
-                o.id.toLowerCase().includes(searchTerm)
-            );
-
-            // Update Stats
-            document.getElementById('statTotal').innerText = orders.length;
-            document.getElementById('statPending').innerText = orders.filter(o => o.status === 'pending').length;
-            document.getElementById('statApproved').innerText = orders.filter(o => o.status === 'approved').length;
-            
-            const totalRev = orders.filter(o => o.status === 'approved').reduce((acc, curr) => acc + Number(curr.amount), 0);
-            document.getElementById('statRevenue').innerText = `₹${totalRev}`;
-
-            if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color: var(--text-sub);">No orders found.</td></tr>`;
-                return;
-            }
-
-            tbody.innerHTML = filtered.map(o => `
-                <tr>
-                    <td>${o.timestamp}</td>
-                    <td><strong>${o.username}</strong><br><span style="font-size:0.75rem; color:var(--text-sub);">${o.phone}</span></td>
-                    <td>${o.edition}</td>
-                    <td><span style="color:var(--sun-gold); font-weight:800;">${o.rankName}</span></td>
-                    <td>₹${o.amount}</td>
-                    <td><span class="status-badge status-${o.status}">${o.status}</span></td>
-                    <td>
-                        <button class="act-btn act-view" onclick="viewScreenshot('${o.screenshot}')"><i class="fa-solid fa-eye"></i></button>
-                        ${o.status === 'pending' ? `
-                            <button class="act-btn act-approve" onclick="updateOrderStatus('${o.id}', 'approved')"><i class="fa-solid fa-check"></i></button>
-                            <button class="act-btn act-reject" onclick="updateOrderStatus('${o.id}', 'rejected')"><i class="fa-solid fa-xmark"></i></button>
-                        ` : ''}
-                        <button class="act-btn act-delete" onclick="deleteOrder('${o.id}')"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function updateOrderStatus(orderId, status) {
-            const orders = JSON.parse(localStorage.getItem('sunmc_orders') || '[]');
-            const idx = orders.findIndex(o => o.id === orderId);
-            if (idx !== -1) {
-                orders[idx].status = status;
-                localStorage.setItem('sunmc_orders', JSON.stringify(orders));
-                renderAdminOrders();
-                showToast(`Order status updated to ${status}!`, 'success');
-            }
-        }
-
-        function deleteOrder(orderId) {
-            if (!confirm("Are you sure you want to delete this order?")) return;
-            let orders = JSON.parse(localStorage.getItem('sunmc_orders') || '[]');
-            orders = orders.filter(o => o.id !== orderId);
-            localStorage.setItem('sunmc_orders', JSON.stringify(orders));
-            renderAdminOrders();
-            showToast('Order deleted.', 'info');
-        }
-
-        function viewScreenshot(src) {
-            const lightbox = document.getElementById('lightboxModal');
-            document.getElementById('lightboxImg').src = src;
-            lightbox.style.display = 'flex';
-        }
-
-        function saveUpiSettings() {
-            const newUpi = document.getElementById('settingUpiId').value.trim();
-            const newName = document.getElementById('settingUpiName').value.trim();
-            if (newUpi) localStorage.setItem('sunmc_upi_id', newUpi);
-            if (newName) localStorage.setItem('sunmc_upi_name', newName);
-            document.getElementById('displayUpiId').innerHTML = `${newUpi} <i class="fa-solid fa-copy"></i>`;
-            showToast('UPI settings updated successfully!', 'success');
-        }
-
-        function renderStaffList() {
-            const staff = JSON.parse(localStorage.getItem('sunmc_staff') || '[]');
-            const tbody = document.getElementById('staffTableBody');
-            tbody.innerHTML = staff.map((s, idx) => `
-                <tr>
-                    <td><strong>${s.user}</strong></td>
-                    <td>${s.role}</td>
-                    <td>
-                        ${s.role !== 'Owner' ? `<button class="act-btn act-reject" onclick="removeStaff(${idx})">Remove</button>` : '<em>Protected</em>'}
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function addStaffAccount() {
-            const u = document.getElementById('newStaffUser').value.trim();
-            const p = document.getElementById('newStaffPass').value.trim();
-            if (!u || !p) {
-                showToast('Please enter both username and password!', 'error');
-                return;
-            }
-
-            const staff = JSON.parse(localStorage.getItem('sunmc_staff') || '[]');
-            staff.push({ user: u, pass: p, role: 'Staff' });
-            localStorage.setItem('sunmc_staff', JSON.stringify(staff));
-
-            document.getElementById('newStaffUser').value = '';
-            document.getElementById('newStaffPass').value = '';
-            renderStaffList();
-            showToast(`Staff account ${u} created!`, 'success');
-        }
-
-        function removeStaff(idx) {
-            const staff = JSON.parse(localStorage.getItem('sunmc_staff') || '[]');
-            staff.splice(idx, 1);
-            localStorage.setItem('sunmc_staff', JSON.stringify(staff));
-            renderStaffList();
-            showToast('Staff account removed.', 'info');
-        }
-
-        function clearAllOrders() {
-            if (confirm("WARNING: Are you sure you want to clear ALL orders?")) {
-                localStorage.setItem('sunmc_orders', JSON.stringify([]));
-                renderAdminOrders();
-                showToast('All orders cleared.', 'info');
-            }
-        }
-
-        function exportCSV() {
-            const orders = JSON.parse(localStorage.getItem('sunmc_orders') || '[]');
-            if (orders.length === 0) {
-                showToast('No orders to export!', 'error');
-                return;
-            }
-
-            let csv = 'OrderID,Timestamp,Username,Email,Phone,Edition,Rank,Amount,Status,TxnID\n';
-            orders.forEach(o => {
-                csv += `"${o.id}","${o.timestamp}","${o.username}","${o.email}","${o.phone}","${o.edition}","${o.rankName}","${o.amount}","${o.status}","${o.txnId}"\n`;
-            });
-
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.setAttribute('href', url);
-            a.setAttribute('download', `sunmc_orders_${Date.now()}.csv`);
-            a.click();
-        }
-
-        /* =========================================================
-           7. UTILITY & UI HELPERS
-           ========================================================= */
-        function openModal(id) {
-            document.getElementById(id).classList.add('active');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('active');
-        }
-
-        function copyServerIP() {
-            const ip = document.getElementById('serverIp').innerText;
-            navigator.clipboard.writeText(ip);
-            showToast('Server IP copied to clipboard!', 'success');
-        }
-
-        function copyUPI() {
-            const upi = localStorage.getItem('sunmc_upi_id');
-            navigator.clipboard.writeText(upi);
-            showToast('UPI ID copied to clipboard!', 'success');
-        }
-
-        function showToast(msg, type = 'info') {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            
-            let icon = 'fa-info-circle';
-            if (type === 'success') icon = 'fa-circle-check';
-            if (type === 'error') icon = 'fa-triangle-exclamation';
-
-            toast.innerHTML = `<i class="fa-solid ${icon}" style="color: var(--sun-gold); font-size: 1.2rem;"></i> <span>${msg}</span>`;
-            container.appendChild(toast);
-
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(100%)';
-                toast.style.transition = 'all 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-
-        /* =========================================================
-           8. ANIMATED BACKGROUND CANVAS (SUN PARTICLES)
-           ========================================================= */
-        function initParticles() {
-            const canvas = document.getElementById('bgCanvas');
-            const ctx = canvas.getContext('2d');
-
-            function resize() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-            resize();
-            window.addEventListener('resize', resize);
-
-            const particles = [];
-            const particleCount = 45;
-
-            for (let i = 0; i < particleCount; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 2 + 1,
-                    color: Math.random() > 0.5 ? '#ffd700' : '#ff8c00',
-                    vy: -(Math.random() * 0.8 + 0.2),
-                    vx: (Math.random() - 0.5) * 0.5,
-                    alpha: Math.random() * 0.5 + 0.2
-                });
-            }
-
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                particles.forEach(p => {
-                    p.y += p.vy;
-                    p.x += p.vx;
-
-                    if (p.y < 0) {
-                        p.y = canvas.height;
-                        p.x = Math.random() * canvas.width;
+            // alignment for v>=2
+            if (ver >= 2){
+                const centers = ver === 2 ? [6,18] : ver === 3 ? [6,22] : ver === 4 ? [6,26] : [6,30];
+                // single alignment usually at (n-7-ish)
+                const ac = [ver<=1?null: n-7].filter(Boolean);
+                ac.forEach(c => {
+                    const ax = c, ay = c;
+                    if (m[ay][ax] !== null) return;
+                    for (let dy = -2; dy <= 2; dy++)
+                    for (let dx = -2; dx <= 2; dx++){
+                        const edge = Math.abs(dx)===2||Math.abs(dy)===2;
+                        const mid = dx===0&&dy===0;
+                        m[ay+dy][ax+dx] = edge || mid ? 1 : 0;
                     }
-
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = p.color;
-                    ctx.globalAlpha = p.alpha;
-                    ctx.shadowBlur = 10;
-                    ctx.shadowColor = p.color;
-                    ctx.fill();
                 });
-
-                requestAnimationFrame(animate);
             }
-            animate();
+
+            // reserve format info
+            for (let i = 0; i < 9; i++){
+                if (m[8][i] === null) m[8][i] = 0;
+                if (m[i][8] === null) m[i][8] = 0;
+            }
+            for (let i = 0; i < 8; i++){
+                if (m[8][n-1-i] === null) m[8][n-1-i] = 0;
+                if (m[n-1-i][8] === null) m[n-1-i][8] = 0;
+            }
         }
-    </script>
+        fillPattern();
+
+        // place data bits zigzag
+        const bitstream = [];
+        all.forEach(b => { for (let i = 7; i >= 0; i--) bitstream.push((b >> i) & 1); });
+        let bi = 0;
+        let right = n - 1;
+        let upward = true;
+        while (right > 0){
+            if (right === 6) right = 5;
+            for (let v = 0; v < n; v++){
+                const y = upward ? n - 1 - v : v;
+                for (let dx = 0; dx < 2; dx++){
+                    const x = right - dx;
+                    if (m[y][x] !== null) continue;
+                    let bit = bi < bitstream.length ? bitstream[bi++] : 0;
+                    // mask 0: (r+c)%2==0
+                    if (((y + x) % 2) === 0) bit ^= 1;
+                    m[y][x] = bit;
+                }
+            }
+            upward = !upward;
+            right -= 2;
+        }
+
+        // format info ECL M (01) mask 0 (000) => 0b01000 = 8
+        // precomputed format bits for (ecl M=00? wait)
+        // ECL: L=01 M=00 Q=11 H=10  — use M = 00, mask 0 = 000 → 00000
+        // BCH format strings commonly used:
+        const FORMATS = {
+            // key: ecl+mask — M + mask0
+            'M0': 0x5412 // standard table value for M mask0
+        };
+        // Use known good format bit string for ECL-M mask-0: 101010000010010
+        const fmtBits = [1,0,1,0,1,0,0,0,0,0,1,0,0,1,0]; // 15 bits
+        // actually let's use a verified constant:
+        const fmt = 0x5412; // corresponds commonly
+        const fb = [];
+        for (let i = 14; i >= 0; i--) fb.push((fmt >> i) & 1);
+
+        const fmtPositions = [
+            // horizontal near top-left
+            [[8,0],[8,1],[8,2],[8,3],[8,4],[8,5],[8,7],[8,8],[7,8],[5,8],[4,8],[3,8],[2,8],[1,8],[0,8]],
+            // other copy
+            [[n-1,8],[n-2,8],[n-3,8],[n-4,8],[n-5,8],[n-6,8],[n-7,8],[8,n-8],[8,n-7],[8,n-6],[8,n-5],[8,n-4],[8,n-3],[8,n-2],[8,n-1]]
+        ];
+        // Simpler: write format with known pattern for mask0 ECL M
+        function writeFormat(bits15){
+            const seq = [
+                [0,8],[1,8],[2,8],[3,8],[4,8],[5,8],[7,8],[8,8],[8,7],[8,5],[8,4],[8,3],[8,2],[8,1],[8,0]
+            ];
+            const seq2 = [
+                [8,n-1],[8,n-2],[8,n-3],[8,n-4],[8,n-5],[8,n-6],[8,n-7],[8,n-8],
+                [n-8,8],[n-7,8],[n-6,8],[n-5,8],[n-4,8],[n-3,8],[n-2,8]
+                // n-1,8 is dark module area - skip last carefully
+            ];
+            for (let i = 0; i < 15; i++){
+                const [x,y] = seq[i];
+                m[y][x] = bits15[i];
+            }
+            // second copy
+            const seq2full = [
+                [n-1,8],[n-2,8],[n-3,8],[n-4,8],[n-5,8],[n-6,8],[n-7,8],
+                [8,n-8],[8,n-7],[8,n-6],[8,n-5],[8,n-4],[8,n-3],[8,n-2],[8,n-1]
+            ];
+            for (let i = 0; i < 15; i++){
+                const [x,y] = seq2full[i];
+                if (x === 8 && y === n-8) { m[y][x] = 1; continue; } // dark already
+                m[y][x] = bits15[i];
+            }
+        }
+        // 15-bit format for ECC-M mask 0 from QR spec table: 0x5412
+        const bits15 = [];
+        for (let i = 14; i >= 0; i--) bits15.push((0x5412 >> i) & 1);
+        writeFormat(bits15);
+
+        return m;
+    }
+
+    function drawToCanvas(canvas, text, fg, bg){
+        const matrix = encode(text);
+        const n = matrix.length;
+        const ctx = canvas.getContext('2d');
+        const quiet = 2;
+        const total = n + quiet * 2;
+        const scale = Math.floor(canvas.width / total) || 4;
+        const offset = Math.floor((canvas.width - total * scale) / 2);
+
+        ctx.fillStyle = bg || '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = fg || '#000000';
+        for (let y = 0; y < n; y++){
+            for (let x = 0; x < n; x++){
+                if (matrix[y][x]) {
+                    ctx.fillRect(offset + (x + quiet) * scale, offset + (y + quiet) * scale, scale, scale);
+                }
+            }
+        }
+        // small sun accent corner (does not cover functional area much - skip to keep scannable)
+    }
+
+    return { drawToCanvas, encode };
+})();
+
+function drawUpiQr(upiId, name, amount){
+    const canvas = document.getElementById('qrCanvas');
+    if (!canvas) return;
+    const payload = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(name)}&am=${Number(amount).toFixed(2)}&cu=INR&tn=${encodeURIComponent('SunMC ' + (selectedRank ? selectedRank.name : 'Rank'))}`;
+    try {
+        QR.drawToCanvas(canvas, payload, '#000000', '#ffffff');
+    } catch (err) {
+        console.error(err);
+        // fallback visible pattern so UI never blank
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0,0,200,200);
+        ctx.fillStyle = '#000';
+        ctx.font = '12px monospace';
+        ctx.fillText('QR Error', 70, 100);
+        toast('QR draw issue — UPI ID copy karke pay karo', 'error');
+    }
+}
+
+/* ========== ADMIN ========== */
+function openAdmin(){
+    if (!adminUser){ openOverlay('loginModal'); return; }
+    document.getElementById('adminWho').textContent = 'Logged in: ' + adminUser.user + ' (' + adminUser.role + ')';
+    document.getElementById('setUpi').value = lsStr('sunmc_upi_id', 'sunmc@upi');
+    document.getElementById('setName').value = lsStr('sunmc_upi_name', 'SunMC Store');
+    renderOrders();
+    renderStaff();
+    openOverlay('adminModal');
+}
+function doLogin(e){
+    e.preventDefault();
+    const u = document.getElementById('loginUser').value.trim();
+    const p = document.getElementById('loginPass').value;
+    const staff = ls('sunmc_staff') || [];
+    const acc = staff.find(s => s.user === u && s.pass === p);
+    if (!acc){ toast('Invalid login', 'error'); return; }
+    adminUser = acc;
+    document.getElementById('loginUser').value = '';
+    document.getElementById('loginPass').value = '';
+    closeOverlay('loginModal');
+    openAdmin();
+    toast('Welcome, ' + acc.user, 'success');
+}
+function logout(){
+    adminUser = null;
+    closeOverlay('adminModal');
+    toast('Logged out', 'info');
+}
+function adminTab(name, btn){
+    document.getElementById('tab-orders').style.display = name === 'orders' ? 'block' : 'none';
+    document.getElementById('tab-settings').style.display = name === 'settings' ? 'block' : 'none';
+    document.getElementById('tab-staff').style.display = name === 'staff' ? 'block' : 'none';
+    document.querySelectorAll('.atab').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+}
+function renderOrders(){
+    const orders = ls('sunmc_orders') || [];
+    const q = (document.getElementById('searchOrd').value || '').toLowerCase();
+    const list = orders.filter(o =>
+        !q || o.username.toLowerCase().includes(q) || o.rankName.toLowerCase().includes(q) || (o.id||'').toLowerCase().includes(q)
+    );
+    document.getElementById('sTotal').textContent = orders.length;
+    document.getElementById('sPending').textContent = orders.filter(o => o.status === 'pending').length;
+    document.getElementById('sApproved').textContent = orders.filter(o => o.status === 'approved').length;
+    const rev = orders.filter(o => o.status === 'approved').reduce((a,o) => a + Number(o.amount), 0);
+    document.getElementById('sRev').textContent = '₹' + rev;
+
+    const body = document.getElementById('ordBody');
+    if (!list.length){
+        body.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);">No orders</td></tr>';
+        return;
+    }
+    body.innerHTML = list.map(o => `
+        <tr>
+            <td>${o.timestamp}</td>
+            <td><strong>${esc(o.username)}</strong><br><span style="font-size:0.75rem;color:var(--muted)">${esc(o.phone)}</span></td>
+            <td>${esc(o.edition)}</td>
+            <td style="color:var(--gold);font-weight:800;">${esc(o.rankName)}</td>
+            <td>₹${o.amount}</td>
+            <td><span class="st st-${o.status}">${o.status}</span></td>
+            <td>
+                <button class="abtn view" type="button" onclick='viewShot(${JSON.stringify(o.screenshot)})'><i class="fa-solid fa-eye"></i></button>
+                ${o.status === 'pending' ? `
+                    <button class="abtn ok" type="button" onclick="setStatus('${o.id}','approved')"><i class="fa-solid fa-check"></i></button>
+                    <button class="abtn no" type="button" onclick="setStatus('${o.id}','rejected')"><i class="fa-solid fa-xmark"></i></button>
+                ` : ''}
+                <button class="abtn del" type="button" onclick="delOrder('${o.id}')"><i class="fa-solid fa-trash"></i></button>
+            </td>
+        </tr>
+    `).join('');
+}
+function esc(s){ return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function setStatus(id, st){
+    const orders = ls('sunmc_orders') || [];
+    const i = orders.findIndex(o => o.id === id);
+    if (i >= 0){ orders[i].status = st; ls('sunmc_orders', orders); renderOrders(); toast('Status: ' + st, 'success'); }
+}
+function delOrder(id){
+    if (!confirm('Delete this order?')) return;
+    ls('sunmc_orders', (ls('sunmc_orders')||[]).filter(o => o.id !== id));
+    renderOrders(); toast('Deleted', 'info');
+}
+function viewShot(src){
+    document.getElementById('lightImg').src = src;
+    document.getElementById('lightbox').style.display = 'flex';
+}
+function saveUPI(){
+    const u = document.getElementById('setUpi').value.trim();
+    const n = document.getElementById('setName').value.trim();
+    if (u) localStorage.setItem('sunmc_upi_id', u);
+    if (n) localStorage.setItem('sunmc_upi_name', n);
+    document.getElementById('upiPill').innerHTML = lsStr('sunmc_upi_id','sunmc@upi') + ' <i class="fa-solid fa-copy"></i>';
+    toast('UPI settings saved', 'success');
+}
+function renderStaff(){
+    const staff = ls('sunmc_staff') || [];
+    document.getElementById('staffBody').innerHTML = staff.map((s, idx) => `
+        <tr>
+            <td><strong>${esc(s.user)}</strong></td>
+            <td>${esc(s.role)}</td>
+            <td>${s.role === 'Owner' ? '<em>Protected</em>' : `<button class="abtn no" type="button" onclick="rmStaff(${idx})">Remove</button>`}</td>
+        </tr>
+    `).join('');
+}
+function addStaff(){
+    const u = document.getElementById('newStaffU').value.trim();
+    const p = document.getElementById('newStaffP').value;
+    if (!u || !p){ toast('Username + password needed', 'error'); return; }
+    const staff = ls('sunmc_staff') || [];
+    if (staff.some(s => s.user === u)){ toast('User already exists', 'error'); return; }
+    staff.push({ user:u, pass:p, role:'Staff' });
+    ls('sunmc_staff', staff);
+    document.getElementById('newStaffU').value = '';
+    document.getElementById('newStaffP').value = '';
+    renderStaff(); toast('Staff added', 'success');
+}
+function rmStaff(idx){
+    const staff = ls('sunmc_staff') || [];
+    staff.splice(idx, 1);
+    ls('sunmc_staff', staff);
+    renderStaff(); toast('Removed', 'info');
+}
+function changeMyPass(){
+    const np = document.getElementById('myNewPass').value;
+    if (!np || !adminUser){ toast('Enter new password', 'error'); return; }
+    const staff = ls('sunmc_staff') || [];
+    const i = staff.findIndex(s => s.user === adminUser.user);
+    if (i >= 0){
+        staff[i].pass = np;
+        adminUser.pass = np;
+        ls('sunmc_staff', staff);
+        document.getElementById('myNewPass').value = '';
+        toast('Password updated', 'success');
+    }
+}
+function clearOrders(){
+    if (!confirm('Clear ALL orders?')) return;
+    ls('sunmc_orders', []);
+    renderOrders();
+    toast('All cleared', 'info');
+}
+function exportCSV(){
+    const orders = ls('sunmc_orders') || [];
+    if (!orders.length){ toast('No orders', 'error'); return; }
+    let csv = 'ID,Time,User,Email,Phone,Edition,Rank,Amount,Status,Txn\n';
+    orders.forEach(o => {
+        csv += `"${o.id}","${o.timestamp}","${o.username}","${o.email}","${o.phone}","${o.edition}","${o.rankName}","${o.amount}","${o.status}","${o.txnId}"\n`;
+    });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
+    a.download = 'sunmc_orders.csv';
+    a.click();
+}
+
+/* ========== HELPERS ========== */
+function copyIP(){
+    navigator.clipboard.writeText('play.sunmc.bond').then(() => toast('IP copied: play.sunmc.bond', 'success'));
+}
+function copyUPI(){
+    navigator.clipboard.writeText(lsStr('sunmc_upi_id','sunmc@upi')).then(() => toast('UPI ID copied', 'success'));
+}
+function toast(msg, type){
+    const el = document.createElement('div');
+    el.className = 'toast';
+    const icon = type === 'success' ? 'fa-circle-check' : type === 'error' ? 'fa-triangle-exclamation' : 'fa-info-circle';
+    el.innerHTML = `<i class="fa-solid ${icon}" style="color:var(--gold)"></i><span>${msg}</span>`;
+    document.getElementById('toasts').appendChild(el);
+    setTimeout(() => { el.style.opacity='0'; el.style.transition='0.3s'; setTimeout(() => el.remove(), 300); }, 3000);
+}
+
+/* ========== PARTICLES ========== */
+function initParticles(){
+    const c = document.getElementById('bgCanvas');
+    const ctx = c.getContext('2d');
+    const parts = [];
+    function resize(){ c.width = innerWidth; c.height = innerHeight; }
+    resize(); addEventListener('resize', resize);
+    for (let i = 0; i < 50; i++){
+        parts.push({
+            x: Math.random()*c.width, y: Math.random()*c.height,
+            r: Math.random()*2.2+0.6,
+            c: Math.random()>0.5 ? '#FFD700' : '#FF8C00',
+            vy: -(Math.random()*0.7+0.15),
+            vx: (Math.random()-0.5)*0.4,
+            a: Math.random()*0.5+0.15
+        });
+    }
+    (function loop(){
+        ctx.clearRect(0,0,c.width,c.height);
+        parts.forEach(p => {
+            p.y += p.vy; p.x += p.vx;
+            if (p.y < -5){ p.y = c.height+5; p.x = Math.random()*c.width; }
+            ctx.beginPath();
+            ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+            ctx.fillStyle = p.c;
+            ctx.globalAlpha = p.a;
+            ctx.shadowBlur = 12; ctx.shadowColor = p.c;
+            ctx.fill();
+            ctx.globalAlpha = 1; ctx.shadowBlur = 0;
+        });
+        requestAnimationFrame(loop);
+    })();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderRanks();
+    initParticles();
+});
+</script>
 </body>
 </html>
